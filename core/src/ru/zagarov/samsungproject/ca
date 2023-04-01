@@ -1,0 +1,230 @@
+package ru.zagarov.samsungproject;
+
+import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.CircleShape;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+
+import ru.zagarov.samsungproject.MenuScreen;
+
+
+public class CharacterActor extends Actor {
+
+    private static final float JUMP_SPEED = 10.0f;
+
+    private ImageButton leftButton;
+
+    private ImageButton rightButton;
+
+    private ImageButton jumpButton;
+
+    public TextureRegion textureRegion;
+
+    public Texture texture;
+
+    public Rectangle hitbox;
+
+
+
+
+    protected boolean isJumping = false;
+    protected boolean isFalling = false;
+
+
+    private int baseX = 600;
+    private int baseY = 127;
+    private boolean shouldFlip = false;
+
+    private int speed = 10;
+
+    public boolean check_key_in_arm = false;
+
+
+    private Game game;
+
+
+    private World world;
+    private Body body;
+    private float jumpForce = 10.0f;
+    private boolean canJump = true;
+
+
+    public CharacterActor(ImageButton leftButton, ImageButton rightButton, ImageButton jumpButton, Game game, World world) {
+        this.world = world;
+
+        setX(baseX);
+        setY(baseY);
+
+
+
+
+
+
+        texture = new Texture("Character.png");
+        this.leftButton = leftButton;
+        this.rightButton = rightButton;
+        this.jumpButton = jumpButton;
+        this.game = game;
+        textureRegion = new TextureRegion(texture);
+        setWidth(texture.getWidth());
+        setHeight(texture.getHeight());
+        setOriginX(texture.getWidth() / 2f);
+        setOriginY(texture.getHeight() / 2f);
+
+
+        // Создаем определение тела
+        BodyDef bodyDef = new BodyDef();
+        bodyDef.type = BodyType.DynamicBody;
+        bodyDef.position.set(getX(), getY());
+
+        // Создаем тело в мире
+        body = world.createBody(bodyDef);
+
+        // Создаем форму тела
+        PolygonShape shape = new PolygonShape();
+        shape.setAsBox(getWidth() / 2, getHeight() / 2);
+
+        // Создаем определение фикстуры
+        FixtureDef fixtureDef = new FixtureDef();
+        fixtureDef.shape = shape;
+        fixtureDef.density = 1.0f;
+        fixtureDef.friction = 0.3f;
+        fixtureDef.restitution = 0.0f;
+
+        // Создаем фикстуру для тела
+        body.createFixture(fixtureDef);
+
+        // Освобождаем память, выделенную для формы
+        shape.dispose();
+
+
+        hitbox = new Rectangle(getX(), getY(), getWidth(), getHeight());
+    }
+
+
+    @Override
+    public void act(float delta) {
+        super.act(delta);
+        if(Gdx.input.isKeyPressed(Input.Keys.A)) {
+            body.setLinearVelocity(5f, body.getLinearVelocity().y);
+        }
+        if(Gdx.input.isKeyPressed(Input.Keys.D)) {
+            body.setLinearVelocity(-5f, body.getLinearVelocity().y);
+        }
+//        if(jumpButton.isPressed() || Gdx.input.isKeyPressed(Input.Keys.SPACE)){
+//            checkJump = true;
+//        }
+//        if((jumpButton.isPressed() || Gdx.input.isKeyPressed(Input.Keys.SPACE)) && !isJumping && !isFalling) {
+//            isJumping = true;
+//        }
+//        if(isJumping){
+//            moveBy(0, 5);
+//            if(getY()>baseY+jumpHeight) {
+//                isJumping = false;
+//                isFalling = true;
+//            }
+//        }
+//        if(isFalling){
+//
+//            moveBy(0, -5);
+//            if(getY()<=baseY) {
+//                isFalling=false;
+//                setY(baseY);
+//            }
+//        }
+
+        if (canJump && Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
+            // Применяем импульс вверх, чтобы совершить прыжок
+            body.applyLinearImpulse(5, jumpForce, getX(), getY(), true);
+            canJump = false;
+        }
+
+
+        if (getX() < 0) {
+            setX(0);
+        }
+        if (getY() < 0) {
+            setY(0);
+        }
+        if (getX() > MyGdxGame.SCREEN_WIDTH - getWidth()) {
+            setX(MyGdxGame.SCREEN_WIDTH - getWidth());
+        }
+        if (getY() > MyGdxGame.SCREEN_HEIGHT - getWidth()) {
+            setY(MyGdxGame.SCREEN_HEIGHT - getWidth());
+        }
+
+        setPosition(body.getPosition().x - getWidth() / 2, body.getPosition().y - getHeight() / 2 + 131);
+        hitbox.setPosition(getX(), getY());
+        checkOverlap();
+
+    }
+
+
+
+
+
+
+    private void checkOverlap() {
+        Stage stage = getStage();
+        Array<Actor> actors = stage.getActors();
+        for (Actor actor : actors) {
+            if (actor instanceof DoorActor) {
+                DoorActor door = (DoorActor) actor;
+                if (door.hitbox.overlaps(hitbox)) {
+                    if (check_key_in_arm) {
+                        door.remove();
+                        texture = new Texture("Character.png");
+                        textureRegion = new TextureRegion(texture);
+                        check_key_in_arm = false;
+                        game.setScreen(new MenuScreen(game));
+                    } else {
+                        setX(1000 - getWidth());
+                    }
+                }
+            }
+        }
+    }
+
+
+
+    public void  setCanJump(boolean canJump){
+        this.canJump = canJump;
+    }
+
+
+
+    @Override
+    public void draw(Batch batch, float parentAlpha) {
+        super.draw(batch, parentAlpha);
+
+        batch.draw(
+                textureRegion, //картинка которую будк отбражать
+                getX(), // координаты нижней левой точки картинки по Х
+                getY(), // координаты нижней левой точки картинки по У
+                getOriginX(), // это центр вращения Х
+                getOriginY(), // это центр вращения У
+                getWidth(),
+                getHeight(),
+                getScaleX(),
+                getScaleY(),
+                getRotation()
+        );
+    }
+}
