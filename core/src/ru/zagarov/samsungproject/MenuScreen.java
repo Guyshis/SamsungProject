@@ -4,7 +4,6 @@ import static ru.zagarov.samsungproject.MyGdxGame.SCREEN_HEIGHT;
 import static ru.zagarov.samsungproject.MyGdxGame.SCREEN_WIDTH;
 
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -20,23 +19,25 @@ public class MenuScreen implements Screen {
     public Game myGdxGame;
     public FitViewport viewport;
 
-    public MenuScreen(Game myGdxGame) {
+    public MenuScreen(Game myGdxGame, Stage stage) {
         this.myGdxGame = myGdxGame;
-        viewport = new FitViewport(SCREEN_WIDTH, SCREEN_HEIGHT);
-        stage = new Stage(viewport);
-        Gdx.input.setInputProcessor(stage);
-
+        this.stage = stage;
 
         Texture startTexture = new Texture("startButton.png");
         ImageButton startButton = new ImageButton(new TextureRegionDrawable(startTexture));
-        startButton.setPosition((SCREEN_WIDTH - startButton.getWidth()) / 2, SCREEN_HEIGHT / 2);
+        startButton.setPosition((SCREEN_WIDTH - startButton.getWidth()) / 2, SCREEN_HEIGHT / 2f);
+
+        Texture levelTexture = new Texture("levelButton.png");
+        ImageButton levelButton = new ImageButton(new TextureRegionDrawable(levelTexture));
+        levelButton.setPosition((SCREEN_WIDTH - levelButton.getWidth()) / 2, SCREEN_HEIGHT / 10f);
 
 
 
 
 
-        stage.addActor(new MenuGroundActor(startButton, myGdxGame));
+        stage.addActor(new MenuGroundActor(startButton, levelButton, myGdxGame));
         stage.addActor(startButton);
+        stage.addActor(levelButton);
 
     }
 
@@ -54,7 +55,6 @@ public class MenuScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
-        viewport.update(width, height);
     }
 
     @Override

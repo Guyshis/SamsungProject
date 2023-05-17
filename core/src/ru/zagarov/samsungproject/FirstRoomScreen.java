@@ -13,8 +13,8 @@ public class FirstRoomScreen extends BaseRoomScreen {
         super(myGdxGame);
         this.myGdxGame = myGdxGame;
         stage.addActor(new BackgroundActor());
-        stage.addActor(new KeyActor(100, 127));
-        stage.addActor(new DoorActor(1000, 127));
+//        stage.addActor(new KeyActor(100, 127));
+     //   stage.addActor(new DoorActor(1000, 127));
 
 
         Texture leftTexture = new Texture("left.png");

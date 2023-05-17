@@ -11,19 +11,24 @@ public class MenuGroundActor extends Actor {
 
     private Texture texture;
     public ImageButton startButton;
+    public  ImageButton levelButton;
     public boolean checkStartMenu = false;
     private Game game;
 
-    public MenuGroundActor(ImageButton startButton, Game game) {
+    public MenuGroundActor(ImageButton startButton, ImageButton levelButton, Game game) {
         texture = new Texture("MenuGround.png");
         this.startButton = startButton;
+        this.levelButton = levelButton;
         this.game = game;
     }
 
     @Override
     public void act(float delta) {
         if(startButton.isPressed()){
-            game.setScreen(new SecondScreen(game));
+            game.setScreen(new FirstScreen(game));
+        }
+        if (levelButton.isPressed()){
+            game.setScreen(new LevelsScreen(game));
         }
     }
 

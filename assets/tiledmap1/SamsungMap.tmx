@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.2" tiledversion="1.2.5" orientation="orthogonal" renderorder="left-down" width="20" height="11" tilewidth="16" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="32">
+ <tileset firstgid="1" source="sheet.tsx"/>
+ <layer id="1" name="Слой тайлов 1" width="20" height="11">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,60,0,0,0,0,0,60,61,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,60,61,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+42,42,42,42,42,42,42,42,42,42,42,42,42,42,42,42,42,42,42,42
+</data>
+ </layer>
+ <objectgroup id="2" name="Слой объектов 1">
+  <object id="6" name="platform" type="solid" x="208" y="112" width="32" height="16"/>
+  <object id="22" name="floor" type="solid" x="0" y="160" width="320" height="16"/>
+  <object id="27" name="rightWall" type="solid" x="320.25" y="0.25" height="176"/>
+  <object id="28" name="leftWall" type="solid" x="0.25" y="0.5" height="176"/>
+  <object id="29" name="ceiling" type="solid" x="0" y="0" width="320"/>
+  <object id="30" name="platform" type="solid" x="112" y="96" width="32" height="16"/>
+  <object id="31" name="platforma" type="solid" x="16.3333" y="96.6667" width="16.3333" height="15.3333"/>
+ </objectgroup>
+</map>
