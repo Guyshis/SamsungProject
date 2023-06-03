@@ -86,14 +86,23 @@ public class BaseRoomScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        ScreenUtils.clear(1, 0, 0, 1);
+        ScreenUtils.clear(0, 0, 0, 1);
         stage.act();
         stage.draw();
         float timeStep = 1 / 60f; // шаг времени
         int velocityIterations = 6; // количество итераций для вычисления скоростей
         int positionIterations = 2; // количество итераций для вычисления позиций
-        world.step(timeStep, velocityIterations, positionIterations);
-        world.step(delta, 6, 2);
+        if(LevelsScreen.SixthLevelCheck){
+            for (int i = 0; i < 7; i++) {
+                world.step(timeStep, velocityIterations, positionIterations);
+            }
+        } else{
+            world.step(timeStep, velocityIterations, positionIterations);
+            world.step(timeStep, velocityIterations, positionIterations);
+        }
+
+
+
         //debugRenderer.render(world, camera.combined);
 
 
@@ -168,6 +177,7 @@ public class BaseRoomScreen implements Screen {
 
         if (UserData == "key"){
             fixtureDef.isSensor = true;
+            fixture.setUserData("objects");
 
         }
 

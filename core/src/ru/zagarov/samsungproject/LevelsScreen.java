@@ -6,11 +6,13 @@ import static ru.zagarov.samsungproject.MyGdxGame.SCREEN_WIDTH;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
@@ -27,11 +29,18 @@ public class LevelsScreen implements Screen {
     public Game myGdxGame;
     public FitViewport viewport;
     private SpriteBatch spriteBatch; // спрайтбатч для отрисовки текста на экране
-    private BitmapFont font; // шрифт для отображения текста
+    private BitmapFont font1; // шрифт для отображения текста
     private Button button;
     public static boolean SecondLevelCheck = false;
     public static boolean ThirdLevelCheck = false;
     public static boolean SeventhLevelCheck = false;
+    public static boolean FirstLevelCheck = true;
+    public static boolean FourthLevelCheck = false;
+    public static boolean FifthLevelCheck = false;
+    public static boolean SixthLevelCheck = false;
+    public static boolean EighthLevelCheck = false;
+    public static boolean NinethLevelCheck = false;
+    public static boolean TenthLevelCheck = false;
 
 
 
@@ -44,7 +53,7 @@ public class LevelsScreen implements Screen {
 
         stage.addActor(new LevelsGroundActor());
 
-        int n = 16;
+        int n = 10;
 
         String[] arr = new String[n];
 
@@ -65,7 +74,11 @@ public class LevelsScreen implements Screen {
         final int buttonWidth = 25;
         final int buttonHeight = 25;
         for (int i = 0; i < n; i++) {
-            BitmapFont font1 = new BitmapFont();
+            FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("Roboto-Regular.ttf"));
+            FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+            parameter.size = 20;
+            parameter.color = Color.BLACK;
+            font1 = generator.generateFont(parameter);
             TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle(upDrawable, downDrawable, null, font1);
             TextButton textButton = new TextButton(arr[i], textButtonStyle);
             textButton.setX(buttonX);
@@ -99,73 +112,67 @@ public class LevelsScreen implements Screen {
         switch (level){
             case 0:
                 System.out.println("1");
+                FirstLevelCheck = true;
                 myGdxGame.setScreen(new FirstScreen(myGdxGame));
-                System.out.println(SecondLevelCheck);
+
                 break;
             case 1:
                 System.out.println("2");
-                myGdxGame.setScreen(new SecondScreen(myGdxGame));
                 SecondLevelCheck = true;
+                myGdxGame.setScreen(new SecondScreen(myGdxGame));
+
+
                 break;
             case 2:
                 System.out.println("3");
-                myGdxGame.setScreen(new ThirdScreen(myGdxGame));
                 ThirdLevelCheck = true;
+                myGdxGame.setScreen(new ThirdScreen(myGdxGame));
+
                 break;
             case 3:
                 System.out.println("4");
+                FourthLevelCheck = true;
                 myGdxGame.setScreen(new FourthScreen(myGdxGame));
+
                 break;
             case 4:
                 System.out.println("5");
+                FifthLevelCheck = true;
                 myGdxGame.setScreen(new FifthScreen(myGdxGame));
+
                 break;
             case 5:
                 System.out.println("6");
+                SixthLevelCheck = true;
                 myGdxGame.setScreen(new SixthScreen(myGdxGame));
+
 
                 break;
             case 6:
                 System.out.println("7");
-                myGdxGame.setScreen(new SeventhScreen(myGdxGame));
                 SeventhLevelCheck = true;
+                myGdxGame.setScreen(new SeventhScreen(myGdxGame));
+
                 break;
             case 7:
                 System.out.println("8");
+                EighthLevelCheck = true;
                 myGdxGame.setScreen(new EighthScreen(myGdxGame));
+
                 break;
             case 8:
                 System.out.println("9");
+                NinethLevelCheck = true;
                 myGdxGame.setScreen(new NinthScreen(myGdxGame));
+
                 break;
             case 9:
                 System.out.println("10");
+                TenthLevelCheck = true;
                 myGdxGame.setScreen(new TenthScreen(myGdxGame));
+
                 break;
-            case 10:
-                System.out.println("11");
-                myGdxGame.setScreen(new EleventhScreen(myGdxGame));
-                break;
-            case 11:
-                System.out.println("12");
-                myGdxGame.setScreen(new TwelfthScreen(myGdxGame));
-                break;
-            case 12:
-                System.out.println("13");
-                myGdxGame.setScreen(new ThirteenthScreen(myGdxGame));
-                break;
-            case 13:
-                System.out.println("14");
-                myGdxGame.setScreen(new FourteenthScreen(myGdxGame));
-                break;
-            case 14:
-                System.out.println("15");
-                myGdxGame.setScreen(new FifteenthScreen(myGdxGame));
-                break;
-            case 15:
-                System.out.println("16");
-                myGdxGame.setScreen(new SixteenthScreen(myGdxGame));
-                break;
+
         }
     }
 
@@ -176,7 +183,7 @@ public class LevelsScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        ScreenUtils.clear(1, 0, 0, 1);
+        ScreenUtils.clear(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act(delta);
         stage.draw();

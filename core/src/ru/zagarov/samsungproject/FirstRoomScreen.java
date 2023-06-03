@@ -1,5 +1,6 @@
 package ru.zagarov.samsungproject;
 
+import static ru.zagarov.samsungproject.MyGdxGame.SCREEN_HEIGHT;
 import static ru.zagarov.samsungproject.MyGdxGame.SCREEN_WIDTH;
 
 import com.badlogic.gdx.Game;
@@ -29,11 +30,13 @@ public class FirstRoomScreen extends BaseRoomScreen {
         ImageButton upButton = new ImageButton(new TextureRegionDrawable(upTexture));
         upButton.setPosition(SCREEN_WIDTH - upTexture.getWidth(), 0);
 
+        Texture menuButtonTexture = new Texture("menuButtonTexture.png");
+        ImageButton menuButton = new ImageButton(new TextureRegionDrawable(menuButtonTexture));
+        menuButton.setPosition(SCREEN_WIDTH - menuButtonTexture.getWidth(), SCREEN_HEIGHT - menuButtonTexture.getHeight());
 
 
 
-
-        stage.addActor(new CharacterActor(leftButton, rightButton, upButton, myGdxGame, this));
+        stage.addActor(new CharacterActor(leftButton, rightButton, upButton, menuButton, myGdxGame, this));
         stage.addActor(leftButton);
         stage.addActor(rightButton);
         stage.addActor(upButton);

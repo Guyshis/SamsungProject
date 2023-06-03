@@ -23,11 +23,12 @@ public class MenuScreen implements Screen {
         this.myGdxGame = myGdxGame;
         this.stage = stage;
 
-        Texture startTexture = new Texture("startButton.png");
+        Texture startTexture = new Texture("startButton3.png");
         ImageButton startButton = new ImageButton(new TextureRegionDrawable(startTexture));
         startButton.setPosition((SCREEN_WIDTH - startButton.getWidth()) / 2, SCREEN_HEIGHT / 2f);
 
-        Texture levelTexture = new Texture("levelButton.png");
+
+        Texture levelTexture = new Texture("levelButton3.png");
         ImageButton levelButton = new ImageButton(new TextureRegionDrawable(levelTexture));
         levelButton.setPosition((SCREEN_WIDTH - levelButton.getWidth()) / 2, SCREEN_HEIGHT / 10f);
 

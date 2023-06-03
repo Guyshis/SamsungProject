@@ -1,5 +1,6 @@
 package ru.zagarov.samsungproject;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -20,9 +21,16 @@ public class KeyActor extends Actor{
     static Body body;
     private static BaseRoomScreen baseRoomScreen;
     private boolean isDragging;
+    private Game game;
 
-    public KeyActor(float startX, float startY, BaseRoomScreen baseRoomScreen, BodyDef.BodyType type) {
-        texture = new Texture("key.png");
+    public KeyActor(float startX, float startY, BaseRoomScreen baseRoomScreen, BodyDef.BodyType type, Game game) {
+
+        if(LevelsScreen.NinethLevelCheck){
+            texture = new Texture("key_Character1.png");
+        }else{
+            texture = new Texture("key.png");
+        }
+
 
         this.baseRoomScreen = baseRoomScreen;
 
@@ -37,10 +45,6 @@ public class KeyActor extends Actor{
         );
 
 
-
-        setX(startX);
-        setY(startY);
-
         textureRegion = new TextureRegion(texture);
         setWidth(texture.getWidth());
         setHeight(texture.getHeight());
@@ -48,11 +52,9 @@ public class KeyActor extends Actor{
         setOriginY(texture.getHeight() / 2f);
 
 
-        if(LevelsScreen.SeventhLevelCheck){
-            hitbox = new Rectangle(startX-2, startY-2, getWidth()+4, getHeight()+4);
-        } else{
-            hitbox = new Rectangle(startX, startY, getWidth(), getHeight());
-        }
+
+        this.game = game;
+        hitbox = new Rectangle(startX, startY, getWidth(), getHeight()+1);
 
     }
 
@@ -60,18 +62,33 @@ public class KeyActor extends Actor{
     public void act(float delta) {
 
         super.act(delta);
+        if (LevelsScreen.SeventhLevelCheck || LevelsScreen.FourthLevelCheck || LevelsScreen.FirstLevelCheck){
+            body.setAwake(false);
+        }
+
+        if(LevelsScreen.NinethLevelCheck){
+            texture = new Texture("key_Character.png");
+            textureRegion = new TextureRegion(texture);
+        }
+
+
         Vector2 currentPosition = body.getPosition();
         setX(currentPosition.x - getWidth()/2f);
         setY(currentPosition.y - getHeight()/2f);
-        if(!LevelsScreen.SeventhLevelCheck){
-            hitbox.setX(currentPosition.x - getWidth()/2f);
-            hitbox.setY(currentPosition.y - getHeight()/2f);
-        }
+        hitbox.setX(currentPosition.x - getWidth()/2f);
+        hitbox.setY(currentPosition.y - getHeight()/2f);
+
+
+
+
 
 
 
         if(LevelsScreen.SecondLevelCheck || LevelsScreen.ThirdLevelCheck){
             checkOverlapKeyDoor();
+        }
+        if (LevelsScreen.NinethLevelCheck){
+            checkOverlapKeyDoorNine();
         }
 
 
@@ -110,9 +127,22 @@ public class KeyActor extends Actor{
                 }
             }
         }
-
-
     }
+
+    public void checkOverlapKeyDoorNine() {
+        Stage stage = getStage();
+        Array<Actor> actors = stage.getActors();
+        for (Actor actor : actors) {
+            if (actor instanceof TeleportActor) {
+                TeleportActor teleportActor = (TeleportActor) actor;
+                if (teleportActor.hitbox.overlaps(hitbox)) {
+                    game.setScreen(new TenthScreen(game));
+                }
+            }
+        }
+    }
+
+
 
 
 }

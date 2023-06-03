@@ -1,5 +1,6 @@
 package ru.zagarov.samsungproject;
 
+import static ru.zagarov.samsungproject.MyGdxGame.SCREEN_HEIGHT;
 import static ru.zagarov.samsungproject.MyGdxGame.SCREEN_WIDTH;
 
 import com.badlogic.gdx.Game;
@@ -19,14 +20,13 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
 public class FirstScreen extends BaseRoomScreen{
     private TiledMap map;
 
-    private World world;
+
     private OrthogonalTiledMapRenderer renderer;
 
     private OrthographicCamera orthographicCamera;
@@ -36,6 +36,8 @@ public class FirstScreen extends BaseRoomScreen{
 
     public FirstScreen(Game myGdxGame) {
         super(myGdxGame);
+        stage.addActor(new GameMenuScreen(myGdxGame));
+        stage.addActor(new FloorActor(myGdxGame));
 
 
 
@@ -97,46 +99,49 @@ public class FirstScreen extends BaseRoomScreen{
 
 
 
-        Texture leftTexture = new Texture("left.png");
+        Texture leftTexture = new Texture("left3.png");
         ImageButton leftButton = new ImageButton(new TextureRegionDrawable(leftTexture));
         leftButton.setPosition(0, 0);
 
 
-        Texture rightTexture = new Texture("right.png");
+        Texture rightTexture = new Texture("right3.png");
         ImageButton rightButton = new ImageButton(new TextureRegionDrawable(rightTexture));
-        rightButton.setPosition(1.5f * leftTexture.getWidth(), 0);
+        rightButton.setPosition(leftTexture.getWidth() *2.5f, 0);
 
 
-        Texture upTexture = new Texture("up.png");
+        Texture upTexture = new Texture("up3.png");
         ImageButton upButton = new ImageButton(new TextureRegionDrawable(upTexture));
-        upButton.setPosition(SCREEN_WIDTH - upTexture.getWidth() - upTexture.getWidth() / 3f, 0);
+        upButton.setPosition(SCREEN_WIDTH - upTexture.getWidth(), 0);
+
+        Texture menuButtonTexture = new Texture("menuButtonTexture.png");
+        ImageButton menuButton = new ImageButton(new TextureRegionDrawable(menuButtonTexture));
+        menuButton.setPosition(SCREEN_WIDTH - menuButtonTexture.getWidth(), SCREEN_HEIGHT - menuButtonTexture.getHeight());
 
 
-        CharacterActor characterActor = new CharacterActor(leftButton, rightButton, upButton, myGdxGame, this);
-        stage.addActor(characterActor);
+        CharacterActor characterActor = new CharacterActor(leftButton, rightButton, upButton, menuButton, myGdxGame, this);
+ //       stage.addActor(menuButton);
+        stage.addActor(new DoorActor(275, 32, this));
+        stage.addActor(new TeleportActor(318, 20, this));
+        stage.addActor(new KeyActor(220, 146, this, BodyDef.BodyType.DynamicBody, myGdxGame));
         stage.addActor(rightButton);
         stage.addActor(leftButton);
         stage.addActor(upButton);
-        stage.addActor(new DoorActor(272, 20, this));
-        stage.addActor(new KeyActor(225, 150, this, BodyDef.BodyType.DynamicBody));
+        stage.addActor(characterActor);
 
 
 
 
-        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("Roboto-Black.ttf"));
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("FirstTimeWriting!.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.size = 24;
-        parameter.color = Color.WHITE;
-        BitmapFont font = generator.generateFont(parameter);
-        generator.dispose();
-
-        font.dispose();
+        parameter.size = 20;
+        parameter.color = Color.BLACK;
+        font = generator.generateFont(parameter);
 
     }
 
 
     @Override
-    public void hide() {
+    public void dispose() {
         batch.dispose();
         font.dispose();
     }
@@ -145,13 +150,25 @@ public class FirstScreen extends BaseRoomScreen{
     @Override
     public void render(float delta) {
         super.render(delta);
-        renderer.render();
-        //renderer.setView(orthographicCamera);
+
+
         batch.setProjectionMatrix(stage.getCamera().combined);
+
         batch.begin();
-        font.draw(batch, "So easy...", 100, 150);
+        font.draw(batch, "So easy...", 30, 150);
 
         batch.end();
+
+
+
+        renderer.render();
+
+
+        //renderer.setView(orthographicCamera);
+
+
     }
+
+
 }
 

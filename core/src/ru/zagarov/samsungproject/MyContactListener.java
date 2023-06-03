@@ -8,7 +8,7 @@ import com.badlogic.gdx.physics.box2d.Manifold;
 public class MyContactListener implements ContactListener {
 
 
-    public static boolean isActorOnGround = false;
+    public static boolean isActorOnGround = true;
 
     @Override
     public void beginContact(Contact contact) {

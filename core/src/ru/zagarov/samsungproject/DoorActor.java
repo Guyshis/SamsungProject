@@ -9,7 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 
 
 public class DoorActor extends Actor{
-    private Texture texture;
+    public  Texture texture;
     private TextureRegion textureRegion;
     public static Rectangle hitbox;
 
@@ -18,7 +18,7 @@ public class DoorActor extends Actor{
     private boolean isDragging;
 
     public DoorActor(float startX, float startY, BaseRoomScreen baseRoomScreen) {
-        texture = new Texture("door1.png");
+        texture = new Texture("doorTexture_locked1.png");
 
         this.baseRoomScreen = baseRoomScreen;
 
@@ -43,6 +43,17 @@ public class DoorActor extends Actor{
     @Override
     public void act(float delta) {
         super.act(delta);
+        if (CharacterActor.openDoor){
+
+            texture = new Texture("doorTexture_unlocked1.png");
+            setWidth(texture.getWidth());
+            setHeight(texture.getHeight());
+            setOriginX(texture.getWidth() / 2f);
+            setOriginY(texture.getHeight() / 2f);
+
+            textureRegion = new TextureRegion(texture);
+
+        }
     }
 
     @Override

@@ -1,5 +1,6 @@
 package ru.zagarov.samsungproject;
 
+import static ru.zagarov.samsungproject.MyGdxGame.SCREEN_HEIGHT;
 import static ru.zagarov.samsungproject.MyGdxGame.SCREEN_WIDTH;
 
 import com.badlogic.gdx.Game;
@@ -36,6 +37,8 @@ public class FifthScreen extends BaseRoomScreen{
 
     public FifthScreen(Game myGdxGame) {
         super(myGdxGame);
+        stage.addActor(new GameMenuScreen(myGdxGame));
+        stage.addActor(new FloorActor(myGdxGame));
 
     }
 
@@ -98,39 +101,43 @@ public class FifthScreen extends BaseRoomScreen{
 
 
 
-        Texture leftTexture = new Texture("left.png");
+        Texture leftTexture = new Texture("left3.png");
         ImageButton leftButton = new ImageButton(new TextureRegionDrawable(leftTexture));
-        leftButton.setPosition(0, 176 - leftTexture.getHeight());
+        leftButton.setPosition(0, SCREEN_HEIGHT - leftTexture.getHeight());
 
 
-        Texture rightTexture = new Texture("right.png");
+        Texture rightTexture = new Texture("right3.png");
         ImageButton rightButton = new ImageButton(new TextureRegionDrawable(rightTexture));
-        rightButton.setPosition(1.5f * leftTexture.getWidth(), 176 - rightTexture.getHeight());
+        rightButton.setPosition(leftTexture.getWidth() *2.5f, SCREEN_HEIGHT - rightTexture.getHeight());
 
 
-        Texture upTexture = new Texture("up.png");
+        Texture upTexture = new Texture("up3.png");
         ImageButton upButton = new ImageButton(new TextureRegionDrawable(upTexture));
-        upButton.setPosition(SCREEN_WIDTH - upTexture.getWidth() - upTexture.getWidth() / 3f, 176 - upTexture.getHeight());
+        upButton.setPosition(SCREEN_WIDTH - upTexture.getWidth(), SCREEN_HEIGHT - upTexture.getHeight());
+
+        Texture menuButtonTexture = new Texture("menuButtonTexture.png");
+        ImageButton menuButton = new ImageButton(new TextureRegionDrawable(menuButtonTexture));
+        menuButton.setPosition(SCREEN_WIDTH - menuButtonTexture.getWidth(), SCREEN_HEIGHT - menuButtonTexture.getHeight());
 
 
-        CharacterActor characterActor = new CharacterActor(leftButton, rightButton, upButton, myGdxGame, this);
-        stage.addActor(characterActor);
+        CharacterActor characterActor = new CharacterActor(leftButton, rightButton, upButton, menuButton, myGdxGame, this);
+        //       stage.addActor(menuButton);
+        stage.addActor(new DoorActor(275, 96, this));
+        stage.addActor(new TeleportActor(318, 96, this));
+        stage.addActor(new KeyActor(80, 110, this, BodyDef.BodyType.DynamicBody, myGdxGame));
         stage.addActor(rightButton);
         stage.addActor(leftButton);
         stage.addActor(upButton);
-        stage.addActor(new KeyActor(95, 100, this, BodyDef.BodyType.DynamicBody));
-        stage.addActor(new DoorActor(272, 95, this));
+        stage.addActor(characterActor);
 
 
 
-        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("Roboto-Black.ttf"));
+
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("FirstTimeWriting!.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.size = 24;
-        parameter.color = Color.WHITE;
-        BitmapFont font = generator.generateFont(parameter);
-        generator.dispose();
-
-        font.dispose();
+        parameter.size = 20;
+        parameter.color = Color.BLACK;
+        font = generator.generateFont(parameter);
 
     }
 
